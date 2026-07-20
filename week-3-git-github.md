@@ -222,6 +222,49 @@ Her özellik kendi branch'inde geliştirilir.
 
 Branch, projede bağımsız geliştirme yapılmasını sağlayan çalışma dalıdır.
 
+
+# Pull Request Nedir?
+
+## Pull Request Tanımı
+
+Pull Request (PR), bir branch üzerinde yapılan değişikliklerin doğrudan ana dala (main veya master) eklenmesi yerine, önce incelenmesi ve onaylanması için oluşturulan istektir.
+
+Pull Request sayesinde ekip üyeleri yapılan kodları inceleyebilir, yorum yapabilir ve gerekli düzenlemeler tamamlandıktan sonra değişiklikler ana projeye eklenebilir.
+
+---
+
+## Pull Request Ne İşe Yarar?
+
+- Kodların incelenmesini sağlar.
+- Hataların erken tespit edilmesine yardımcı olur.
+- Ekip içi iletişimi ve iş birliğini artırır.
+- Ana dalın daha güvenli ve düzenli kalmasını sağlar.
+- Kod kalitesinin yükselmesine katkı sağlar.
+
+---
+
+## Pull Request Oluşturma Süreci
+
+1. Geliştirici kendi branch'inde çalışır.
+2. Yaptığı değişiklikleri commit eder.
+3. Değişiklikleri GitHub'a push eder.
+4. GitHub üzerinden Pull Request oluşturur.
+5. Ekip üyeleri kodu inceler ve gerekirse yorum yapar.
+6. Onaylandıktan sonra değişiklikler ana branch'e merge edilir.
+
+---
+
+## Örnek
+
+Bir geliştirici **login-feature** adlı branch'te giriş ekranını tamamladıktan sonra değişikliklerini GitHub'a gönderir. Daha sonra **Pull Request** oluşturarak ekip arkadaşlarının kodu incelemesini ister. Kod onaylandıktan sonra bu değişiklikler **main** branch'ine eklenir.
+
+---
+
+## Özet
+
+Pull Request, bir branch'te yapılan değişikliklerin ana projeye eklenmeden önce incelenmesi ve onaylanması için oluşturulan istektir.
+
+
 # Merge Conflict Nedir?
 
 ## Tanım
@@ -327,8 +370,8 @@ Kötü örnekler:
 - son hali
 - değişiklik
 - update
-
-AIHEXA projelerinde commit mesajları yapılan işi net şekilde açıklamalıdır.
+  
+Projelerde commit mesajları yapılan işi net şekilde açıklamalıdır.
 
 # Proje Klasör Yapısı Neden Önemlidir?
 
