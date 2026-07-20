@@ -15,7 +15,7 @@ Sosyal medya için içerik düşünürken biraz zorlandım.
 
 - Yeni bir GitHub repository oluşturdum.
 - README.md dosyasını hazırladım.
-- 3. hafta için gerekli Markdown dosyalarını oluşturdum.
+- Bu hafta için gerekli Markdown dosyalarını oluşturdum.
 - Git ve GitHub araştırmasını tamamladım.
 
 ### Bir sonraki gün neye çalışacağım?
