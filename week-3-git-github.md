@@ -231,7 +231,7 @@ Pull Request (PR), bir branch üzerinde yapılan değişikliklerin doğrudan ana
 
 Pull Request sayesinde ekip üyeleri yapılan kodları inceleyebilir, yorum yapabilir ve gerekli düzenlemeler tamamlandıktan sonra değişiklikler ana projeye eklenebilir.
 
----
+
 
 ## Pull Request Ne İşe Yarar?
 
@@ -241,7 +241,7 @@ Pull Request sayesinde ekip üyeleri yapılan kodları inceleyebilir, yorum yapa
 - Ana dalın daha güvenli ve düzenli kalmasını sağlar.
 - Kod kalitesinin yükselmesine katkı sağlar.
 
----
+
 
 ## Pull Request Oluşturma Süreci
 
@@ -252,13 +252,13 @@ Pull Request sayesinde ekip üyeleri yapılan kodları inceleyebilir, yorum yapa
 5. Ekip üyeleri kodu inceler ve gerekirse yorum yapar.
 6. Onaylandıktan sonra değişiklikler ana branch'e merge edilir.
 
----
+
 
 ## Örnek
 
 Bir geliştirici **login-feature** adlı branch'te giriş ekranını tamamladıktan sonra değişikliklerini GitHub'a gönderir. Daha sonra **Pull Request** oluşturarak ekip arkadaşlarının kodu incelemesini ister. Kod onaylandıktan sonra bu değişiklikler **main** branch'ine eklenir.
 
----
+
 
 ## Özet
 
