@@ -99,3 +99,41 @@ Yapay zekâ çağında geliştiricilerin hangi becerilere odaklanması gerektiğ
 - İngilizceni geliştir.
 - Gerçek projeler üret.
 - GitHub portfolyonu güçlendir.
+
+---
+
+## 06. HTTP ve HTTPS Arasındaki Fark Nedir?
+
+**Amaç**
+İnternet üzerinde veri iletişiminin nasıl gerçekleştiğini ve HTTPS kullanımının neden önemli olduğunu basit ve anlaşılır bir şekilde anlatmak.
+
+**Hedef Kitle**
+- Yazılım öğrencileri
+- Web geliştirmeye yeni başlayanlar
+- Siber güvenlik konularına ilgi duyanlar
+
+**İçerik**
+- HTTP nedir?
+- HTTPS nedir?
+- SSL/TLS sertifikası ne işe yarar?
+- HTTP ve HTTPS arasındaki temel farklar
+- HTTPS neden daha güvenlidir?
+- Günümüzde neden tüm web siteleri HTTPS kullanmalıdır?
+
+## 07. Monolithic vs Microservice
+
+**Amaç**
+Monolithic ve Microservice mimarileri arasındaki temel farkları, avantajlarını ve hangi senaryolarda tercih edilmeleri gerektiğini anlatmak.
+
+**Hedef Kitle**
+- Yazılım öğrencileri
+- Backend geliştiriciler
+- Sistem tasarımına ilgi duyan geliştiriciler
+
+**İçerik**
+- Monolithic mimari nedir?
+- Microservice mimari nedir?
+- Temel farkları nelerdir?
+- Avantaj ve dezavantajları
+- Hangi projede hangisi tercih edilmeli?
+- Netflix, Amazon gibi şirketler neden Microservice kullanıyor?
