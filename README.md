@@ -16,36 +16,47 @@ Bu repository, AIHEXA stajının 3. ve 4. haftalarında gerçekleştirilen araş
 
 ## 3. ve 4. Hafta Çalışma Amacı
 
-(Burada hocanın verdiği amacı kendi cümlelerinle yazacağız.)
+Bu iki haftalık çalışma sürecinin amacı; modern web projelerinde kullanılan temel teknolojileri ve yazılım geliştirme süreçlerini bütüncül bir bakış açısıyla öğrenmektir. Bu kapsamda Git ve GitHub ile sürüm kontrolü, Spring Boot ile backend geliştirme, React ile frontend geliştirme, WordPress, SEO ve sosyal medya yönetimi konuları araştırılarak bir yazılım projesinde bu teknolojilerin nasıl birlikte kullanıldığı incelenecektir. Ayrıca AIHEXA projesi örnek alınarak modül analizleri yapılacak, proje planlama, API analizi ve raporlama becerileri geliştirilecektir.
 
 ---
 
 ## Kullanılacak Teknolojiler
 
+
 - Git
 - GitHub
 - Markdown
+- Java
 - Spring Boot
 - React
-- WordPress
-- HTML
-- CSS
+- HTML5
+- CSS3
 - JavaScript
+- WordPress
+- REST API
+- JSON
 - SEO
-
+- Sosyal Medya Araçları
+  
 ---
 
 ## Öğrenilecek Konular
 
-- Git ve GitHub
-- Spring Boot
-- React
-- WordPress
-- Sosyal Medya
-- SEO
-- AIHEXA Modül Analizi
-- API Analizi
-- Proje Planlama
+
+- Git ve GitHub kullanımı
+- Repository yönetimi
+- README hazırlama
+- Spring Boot mimarisi
+- Backend geliştirme mantığı
+- React ve Component yapısı
+- Frontend geliştirme mantığı
+- REST API kullanımı
+- WordPress yönetimi
+- SEO temelleri
+- Sosyal medya yönetimi
+- AIHEXA modül analizi
+- API analizi
+- Mini proje planlama
 
 ---
 
