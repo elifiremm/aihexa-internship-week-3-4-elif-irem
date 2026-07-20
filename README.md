@@ -64,12 +64,12 @@ Bu iki haftalık çalışma sürecinin amacı; modern web projelerinde kullanıl
 
 | Gün | Konu | Durum |
 |------|------|--------|
-| 3. Hafta Pazartesi | Git & GitHub | ⏳ |
-| 3. Hafta Salı | Spring Boot | ⏳ |
-| 3. Hafta Çarşamba | React | ⏳ |
-| 3. Hafta Perşembe | WordPress - SEO - Sosyal Medya | ⏳ |
-| 3. Hafta Cuma | AIHEXA Modül Analizi | ⏳ |
-| 4. Hafta | Mini Proje Çalışmaları | ⏳ |
+| 3. Hafta Pazartesi | Git & GitHub | Tamamlandı |
+| 3. Hafta Salı | Spring Boot | Bekliyor |
+| 3. Hafta Çarşamba | React | Bekliyor |
+| 3. Hafta Perşembe | WordPress - SEO - Sosyal Medya | Bekliyor |
+| 3. Hafta Cuma | AIHEXA Modül Analizi | Bekliyor |
+| 4. Hafta | Mini Proje Çalışmaları | Bekliyor |
 
 ---
 
