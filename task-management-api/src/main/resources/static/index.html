@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Görev Yönetim Sistemi</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-content">
+        <div>
+            <h1>Görev Yönetim Sistemi</h1>
+            <p>Spring Boot ve PostgreSQL ile hazırlanmıştır.</p>
+        </div>
+
+        <div class="header-stat">
+            <span id="totalTaskCount">0</span>
+            <small>Toplam Görev</small>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="form-section">
+
+        <div class="section-title">
+            <h2 id="formTitle">Yeni Görev Ekle</h2>
+            <p>Görev bilgilerini doldurup kaydedebilirsin.</p>
+        </div>
+
+        <form id="taskForm">
+
+            <input type="hidden" id="taskId">
+
+            <div class="form-group">
+                <label for="title">Görev Başlığı</label>
+
+                <input
+                        type="text"
+                        id="title"
+                        placeholder="Örneğin: Spring Boot çalış"
+                        minlength="3"
+                        maxlength="100"
+                        required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="description">Açıklama</label>
+
+                <textarea
+                        id="description"
+                        placeholder="Görev hakkında kısa bir açıklama yaz..."
+                        maxlength="500"
+                        rows="4"
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="dueDate">Son Teslim Tarihi</label>
+
+                <input
+                        type="date"
+                        id="dueDate"
+                >
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="primary-button" id="submitButton">
+                    Görevi Kaydet
+                </button>
+
+                <button
+                        type="button"
+                        class="secondary-button hidden"
+                        id="cancelButton"
+                >
+                    Güncellemeyi İptal Et
+                </button>
+            </div>
+
+        </form>
+
+        <div id="messageBox" class="message hidden"></div>
+
+    </section>
+
+    <section class="tasks-section">
+
+        <div class="tasks-header">
+
+            <div>
+                <h2>Görevler</h2>
+                <p>Eklenen görevleri görüntüleyebilir ve yönetebilirsin.</p>
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-button active" data-filter="all">
+                    Tümü
+                </button>
+
+                <button class="filter-button" data-filter="pending">
+                    Bekleyenler
+                </button>
+
+                <button class="filter-button" data-filter="completed">
+                    Tamamlananlar
+                </button>
+            </div>
+
+        </div>
+
+        <div class="task-statistics">
+
+            <div class="stat-card">
+                <span id="allCount">0</span>
+                <small>Tüm Görevler</small>
+            </div>
+
+            <div class="stat-card">
+                <span id="pendingCount">0</span>
+                <small>Bekleyen</small>
+            </div>
+
+            <div class="stat-card">
+                <span id="completedCount">0</span>
+                <small>Tamamlanan</small>
+            </div>
+
+        </div>
+
+        <div id="loadingText" class="loading">
+            Görevler yükleniyor...
+        </div>
+
+        <div id="emptyState" class="empty-state hidden">
+            <h3>Henüz görev bulunmuyor</h3>
+            <p>Yukarıdaki formu kullanarak ilk görevini ekleyebilirsin.</p>
+        </div>
+
+        <div id="taskList" class="task-list"></div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+    <p>Task Management API • Spring Boot Frontend</p>
+</footer>
+
+<script src="app.js"></script>
+
+</body>
+</html>

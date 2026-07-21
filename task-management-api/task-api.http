@@ -1,0 +1,53 @@
+### Yeni görev ekle
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Spring Boot projesini tamamla",
+  "description": "DTO, validation ve hata yönetimini bitir",
+  "dueDate": "2026-07-30"
+}
+
+### Bütün görevleri listele
+GET http://localhost:8080/api/tasks
+
+### ID ile görev getir
+GET http://localhost:8080/api/tasks/1
+
+### Görev güncelle
+PUT http://localhost:8080/api/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Spring Boot projesini güncelle",
+  "description": "Proje kodlarını kontrol et",
+  "dueDate": "2026-08-01"
+}
+
+### Tamamlandı olarak işaretle
+PATCH http://localhost:8080/api/tasks/1/complete
+
+### Tamamlanmadı olarak işaretle
+PATCH http://localhost:8080/api/tasks/1/pending
+
+### Tamamlanan görevleri getir
+GET http://localhost:8080/api/tasks/completed
+
+### Bekleyen görevleri getir
+GET http://localhost:8080/api/tasks/pending
+
+### Görev sil
+DELETE http://localhost:8080/api/tasks/1
+
+### Hatalı validation testi
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "Bu istek hata vermelidir",
+  "dueDate": "2020-01-01"
+}
+
+### Bulunmayan görev testi
+GET http://localhost:8080/api/tasks/9999
