@@ -851,3 +851,487 @@ Yaygın exception türleri şunlardır:
 - `SQLException`
 
 Örneğin aynı e-posta adresi veritabanında benzersiz olarak tanımlandıysa ve aynı e-posta yeniden eklenmeye çalışılırsa `DataIntegrityViolationException` oluşabilir.
+
+## Kullanıcı Kayıt Sistemi Akışı
+
+Kullanıcı kayıt sistemi, frontend'den başlayan ve veritabanında kayıt oluşturulmasıyla devam eden çok aşamalı bir süreçtir.
+
+Genel akış şu şekildedir:
+
+```text
+React Form
+→ JSON Veri
+→ Spring Boot Controller
+→ Service
+→ Repository
+→ Database
+→ Response
+→ Frontend Mesajı
+```
+
+## 1. Kullanıcı Hangi Bilgileri Girer?
+
+Kullanıcı kayıt formunda genellikle şu bilgileri girer:
+
+- Ad
+- Soyad
+- E-posta adresi
+- Şifre
+- Şifre tekrarı
+- Telefon numarası
+- Kullanıcı adı
+
+Görevin temel örneğinde ad, soyad, e-posta ve şifre bilgilerinin kullanılması yeterlidir.
+
+Frontend tarafında şu alanlar bulunabilir:
+
+```text
+Ad: Elif
+Soyad: İrem
+E-posta: elif@example.com
+Şifre: 12345678
+```
+
+Kullanıcının girdiği bilgiler kayıt butonuna basılana kadar React uygulamasında tutulur.
+
+## 2. React Bu Bilgileri Nasıl Toplar?
+
+React, form alanlarına girilen değerleri `state` içerisinde saklar. Her input alanında değişiklik olduğunda `onChange` olayı çalışır ve ilgili state değeri güncellenir.
+
+Örnek:
+
+```jsx
+const [formData, setFormData] = useState({
+  name: "",
+  surname: "",
+  email: "",
+  password: ""
+});
+```
+
+Input alanında değişiklik olduğunda:
+
+```jsx
+const handleChange = (event) => {
+  setFormData({
+    ...formData,
+    [event.target.name]: event.target.value
+  });
+};
+```
+
+Form gönderildiğinde:
+
+```jsx
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  const response = await fetch("http://localhost:8080/api/users/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(formData)
+  });
+};
+```
+
+Burada:
+
+- `event.preventDefault()` formun sayfayı yenilemesini engeller.
+- `fetch()` backend'e HTTP isteği gönderir.
+- `method: "POST"` yeni kayıt oluşturulacağını belirtir.
+- `Content-Type: application/json` gönderilen verinin JSON olduğunu bildirir.
+- `JSON.stringify(formData)` JavaScript nesnesini JSON metnine dönüştürür.
+
+## 3. Backend'e Hangi Formatla Veri Gönderilir?
+
+React tarafından toplanan bilgiler JSON formatına dönüştürülerek backend'e gönderilir.
+
+Örnek JSON:
+
+```json
+{
+  "name": "Elif",
+  "surname": "İrem",
+  "email": "elif@example.com",
+  "password": "12345678"
+}
+```
+
+Bu veri HTTP isteğinin body bölümünde gönderilir.
+
+Backend isteği şu bilgilerle alır:
+
+```text
+HTTP Metodu: POST
+Adres: /api/users/register
+Content-Type: application/json
+Body: Kullanıcı bilgileri
+```
+
+## 4. Controller Ne Yapar?
+
+Spring Boot Controller gelen POST isteğini karşılar.
+
+Controller şu işlemleri gerçekleştirir:
+
+1. `/api/users/register` adresine gelen isteği yakalar.
+2. JSON verisini `UserRegisterDto` nesnesine dönüştürür.
+3. Gerekirse temel doğrulama sonuçlarını kontrol eder.
+4. DTO'yu Service katmanına gönderir.
+5. Service tarafından döndürülen sonucu alır.
+6. Uygun HTTP status koduyla frontend'e cevap gönderir.
+
+Örnek:
+
+```java
+@PostMapping("/register")
+public ResponseEntity<UserResponseDto> register(
+        @RequestBody UserRegisterDto dto) {
+
+    UserResponseDto result = userService.register(dto);
+
+    return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(result);
+}
+```
+
+Kayıt başarılı olursa Controller `201 Created` döndürür.
+
+## 5. Service Neyi Kontrol Eder?
+
+Service kullanıcı kayıt işlemine ait bütün iş kurallarını kontrol eder.
+
+Yapılabilecek kontroller şunlardır:
+
+- Ad alanı boş mu?
+- Soyad alanı boş mu?
+- E-posta alanı boş mu?
+- E-posta formatı doğru mu?
+- E-posta daha önce kullanılmış mı?
+- Şifre boş mu?
+- Şifre yeterli uzunlukta mı?
+- Şifre güvenlik kurallarına uygun mu?
+- Girilen bilgiler kaydedilmeye uygun mu?
+
+E-posta daha önce kayıtlıysa Service işlemi durdurur ve hata oluşturur.
+
+Örnek:
+
+```java
+if (userRepository.existsByEmail(dto.getEmail())) {
+    throw new EmailAlreadyExistsException(
+            "Bu e-posta adresi daha önce kullanılmıştır."
+    );
+}
+```
+
+Şifre güvenli hale getirilir:
+
+```java
+String encodedPassword = passwordEncoder.encode(dto.getPassword());
+```
+
+Daha sonra DTO içerisindeki bilgiler Entity nesnesine aktarılır.
+
+```java
+User user = new User();
+user.setName(dto.getName());
+user.setSurname(dto.getSurname());
+user.setEmail(dto.getEmail());
+user.setPassword(encodedPassword);
+user.setCreatedAt(LocalDateTime.now());
+```
+
+Son olarak Repository çağrılır:
+
+```java
+User savedUser = userRepository.save(user);
+```
+
+## 6. Repository Ne İşe Yarar?
+
+Repository, Service tarafından hazırlanan User Entity nesnesini veritabanına kaydeder.
+
+```java
+User savedUser = userRepository.save(user);
+```
+
+`save()` metodu çalıştığında Hibernate gerekli SQL sorgusunu oluşturur.
+
+Oluşabilecek SQL sorgusu mantıksal olarak şu şekildedir:
+
+```sql
+INSERT INTO users
+(name, surname, email, password, created_at)
+VALUES
+('Elif', 'İrem', 'elif@example.com', 'hashlenmis_sifre', CURRENT_TIMESTAMP);
+```
+
+Repository ayrıca e-posta kontrolü için de kullanılabilir:
+
+```java
+boolean exists = userRepository.existsByEmail(dto.getEmail());
+```
+
+Bu işlem veritabanında aynı e-posta adresine sahip bir kullanıcının bulunup bulunmadığını kontrol eder.
+
+## 7. Database'e Hangi Bilgiler Kaydedilir?
+
+Kullanıcı kayıt işlemi başarılı olduğunda veritabanına şu bilgiler kaydedilebilir:
+
+- Kullanıcı id değeri
+- Ad
+- Soyad
+- E-posta adresi
+- Hashlenmiş şifre
+- Kullanıcı rolü
+- Hesap durumu
+- Oluşturulma tarihi
+- Güncellenme tarihi
+
+Örnek tablo:
+
+| id | name | surname | email | password | role | created_at |
+|---|---|---|---|---|---|---|
+| 1 | Elif | İrem | elif@example.com | `$2a$10$...` | USER | 2026-07-21 |
+
+Şifre veritabanına açık şekilde yazılmamalıdır. Örneğin `12345678` değeri doğrudan kaydedilmemelidir. Bunun yerine hashlenmiş bir değer kaydedilmelidir.
+
+## 8. Database İşleminden Sonra Ne Olur?
+
+Repository kaydı yaptıktan sonra kaydedilen User nesnesini Service katmanına döndürür.
+
+Service, Entity nesnesini frontend'e doğrudan göndermek yerine bir cevap DTO'suna dönüştürür.
+
+Örnek cevap DTO'su:
+
+```json
+{
+  "id": 1,
+  "name": "Elif",
+  "surname": "İrem",
+  "email": "elif@example.com"
+}
+```
+
+Bu cevap içerisinde şifre bulunmaz.
+
+Service sonucu Controller'a gönderir. Controller da frontend'e HTTP cevabı döndürür.
+
+## 9. Backend Başarılı Olursa Frontend Ne Gösterir?
+
+Kayıt başarılı olduğunda backend şu şekilde cevap verebilir:
+
+```json
+{
+  "success": true,
+  "message": "Kullanıcı kaydı başarıyla oluşturuldu.",
+  "data": {
+    "id": 1,
+    "name": "Elif",
+    "surname": "İrem",
+    "email": "elif@example.com"
+  }
+}
+```
+
+HTTP durum kodu:
+
+```text
+201 Created
+```
+
+React, cevabın başarılı olduğunu kontrol eder ve kullanıcıya mesaj gösterir.
+
+```jsx
+if (response.ok) {
+  setMessage("Hesabınız başarıyla oluşturuldu.");
+}
+```
+
+Frontend tarafında şu mesajlardan biri gösterilebilir:
+
+- Kayıt başarılı.
+- Hesabınız başarıyla oluşturuldu.
+- Giriş yapmak için yönlendiriliyorsunuz.
+- Kullanıcı kaydı tamamlandı.
+
+Başarılı işlem sonrasında kullanıcı giriş sayfasına yönlendirilebilir.
+
+## 10. Backend Hata Verirse Frontend Ne Gösterir?
+
+Backend doğrulama veya sistem hatasıyla karşılaşırsa uygun status kodu ve hata mesajı gönderir.
+
+E-posta daha önce kayıtlıysa:
+
+```json
+{
+  "success": false,
+  "message": "Bu e-posta adresi daha önce kullanılmıştır."
+}
+```
+
+HTTP durum kodu:
+
+```text
+409 Conflict
+```
+
+Şifre kısa ise:
+
+```json
+{
+  "success": false,
+  "message": "Şifre en az 8 karakter olmalıdır."
+}
+```
+
+HTTP durum kodu:
+
+```text
+400 Bad Request
+```
+
+Sunucu hatası oluşursa:
+
+```json
+{
+  "success": false,
+  "message": "Kayıt işlemi sırasında sunucu hatası oluştu."
+}
+```
+
+HTTP durum kodu:
+
+```text
+500 Internal Server Error
+```
+
+React hata mesajını okuyarak kullanıcıya uygun şekilde gösterir.
+
+```jsx
+const data = await response.json();
+
+if (!response.ok) {
+  setMessage(data.message);
+}
+```
+
+Frontend kullanıcıya teknik stack trace göstermemelidir. Kullanıcıya anlaşılır bir mesaj verilmelidir. Ayrıntılı teknik hata bilgisi yalnızca backend loglarında tutulmalıdır.
+
+## Kullanıcı Kayıt Akışının Tam Özeti
+
+Kullanıcı React formuna ad, soyad, e-posta ve şifre bilgilerini girer. React bu bilgileri state yapısında tutar. Kullanıcı kayıt butonuna bastığında bilgiler JSON formatına dönüştürülür ve POST isteğiyle Spring Boot backend uygulamasına gönderilir.
+
+Controller gelen isteği karşılar ve JSON verisini DTO nesnesine dönüştürür. DTO, Service katmanına iletilir. Service alanların boş olup olmadığını, e-posta adresinin daha önce kullanılıp kullanılmadığını ve şifrenin kurallara uygunluğunu kontrol eder.
+
+Bilgiler doğruysa Service bir User Entity nesnesi oluşturur. Şifre güvenli biçimde hashlenir. Repository, Entity nesnesini veritabanına kaydeder. Veritabanı yeni kullanıcı kaydını oluşturur ve oluşan id değeriyle birlikte sonucu Repository'ye döndürür.
+
+Repository sonucu Service katmanına iletir. Service Entity nesnesini güvenli bir cevap DTO'suna dönüştürür. Controller bu cevabı `201 Created` durum koduyla frontend'e gönderir.
+
+React cevabı alır. İşlem başarılıysa "Hesabınız başarıyla oluşturuldu" mesajını gösterir. İşlem başarısızsa backend tarafından gönderilen uygun hata mesajını kullanıcıya gösterir.
+
+## AIHEXA Projesinde Spring Boot Nerede Kullanılır?
+
+AIHEXA bünyesinde geliştirilecek eğitim, yazılım, sağlık veya yapay zekâ tabanlı projelerde Spring Boot backend katmanında kullanılabilir.
+
+Spring Boot'un kullanılabileceği alanlar şunlardır:
+
+### Kullanıcı Kayıt Sistemi
+
+Kullanıcıların ad, soyad, e-posta ve şifre bilgileriyle sisteme kayıt olması Spring Boot tarafından yönetilebilir. Kullanıcı bilgileri kontrol edilir ve veritabanına kaydedilir.
+
+### Kullanıcı Giriş Sistemi
+
+Kullanıcı giriş yaptığında e-posta ve şifre backend'e gönderilir. Spring Boot kullanıcı bilgilerini kontrol eder ve doğruysa giriş işlemini gerçekleştirir.
+
+### Yetkilendirme Sistemi
+
+Sistemde öğrenci, eğitmen, yönetici veya müşteri gibi farklı roller bulunabilir. Spring Boot, kullanıcı rollerine göre hangi sayfalara ve işlemlere erişilebileceğini kontrol edebilir.
+
+### Eğitim Yönetim Sistemi
+
+AIHEXA'nın eğitim projelerinde:
+
+- Eğitim oluşturma
+- Eğitim listeleme
+- Ders ekleme
+- Öğrenci kaydı
+- Eğitmen yönetimi
+- Eğitim içeriği görüntüleme
+- Sertifika işlemleri
+
+Spring Boot ile gerçekleştirilebilir.
+
+### Sosyal Medya İçerik Yönetimi
+
+AIHEXA için geliştirilecek içerik yönetim sisteminde:
+
+- İçerik ekleme
+- İçerik düzenleme
+- İçerik silme
+- Yayın tarihi belirleme
+- Platform seçme
+- İçerikleri listeleme
+
+işlemleri Spring Boot REST API üzerinden yönetilebilir.
+
+### İletişim Formları
+
+Kullanıcıların web sitesindeki iletişim formundan gönderdiği ad, e-posta, telefon ve mesaj bilgileri Spring Boot tarafından alınabilir ve veritabanına kaydedilebilir.
+
+### Randevu ve Başvuru Sistemi
+
+Eğitim başvuruları, danışmanlık talepleri veya görüşme randevuları Spring Boot kullanılarak yönetilebilir.
+
+### Veritabanı İşlemleri
+
+Spring Data JPA ve Hibernate kullanılarak AIHEXA projelerindeki veriler PostgreSQL veya MySQL gibi veritabanlarında saklanabilir.
+
+### React ile Veri İletişimi
+
+React frontend uygulaması ile Spring Boot backend arasında REST API üzerinden veri alışverişi yapılabilir.
+
+Örnek akış:
+
+```text
+React Kullanıcı Arayüzü
+→ HTTP İsteği
+→ Spring Boot REST API
+→ Service Katmanı
+→ Repository Katmanı
+→ PostgreSQL Veritabanı
+→ JSON Cevap
+→ React Ekranı
+```
+
+### Raporlama ve Yönetim Paneli
+
+Yönetim panelinde gösterilen:
+
+- Kullanıcı sayısı
+- Eğitim sayısı
+- Başvuru sayısı
+- Günlük ziyaretçi bilgileri
+- Yeni kayıtlar
+- İçerik istatistikleri
+
+backend tarafından hesaplanıp frontend'e gönderilebilir.
+
+## Spring Boot Kullanmanın AIHEXA İçin Avantajları
+
+Spring Boot kullanılması şu avantajları sağlayabilir:
+
+- Java tabanlı güçlü bir backend altyapısı oluşturur.
+- REST API geliştirmeyi kolaylaştırır.
+- React ile kolay şekilde iletişim kurabilir.
+- Katmanlı mimari sayesinde kod düzenli olur.
+- Veritabanı işlemleri JPA ve Hibernate ile kolaylaşır.
+- Güvenlik mekanizmaları eklenebilir.
+- Proje büyüdükçe yeni modüller eklemek kolaylaşır.
+- Kurumsal projeler için uygun bir yapı sağlar.
+- Test yazmayı ve hata yönetimini kolaylaştırır.
+- Maven sayesinde bağımlılıklar merkezi olarak yönetilir.
