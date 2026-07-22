@@ -44,3 +44,25 @@ GitHub'a Spring Boot projesini mevcut staj reposuna eklerken proje klasörü yan
 ### Bir sonraki gün neye çalışacağım?
 
 React temellerini öğrenerek frontend geliştirme mantığını araştıracağım. Component yapısı, JSX, Props, State, useState, useEffect, React Router, form yönetimi, API'den veri çekme, localStorage kullanımı ve responsive tasarım konularını inceleyeceğim. Ayrıca React kullanarak bir eğitim kayıt formu tasarlayıp backend'e gönderilecek JSON yapısını hazırlayacağım.
+
+## Çarşamba
+
+### Bugün ne öğrendim?
+
+React'in temel yapısını ve frontend geliştirme mantığını öğrendim. Component yapısını, JSX sözdizimini, Props ve State kavramlarını, useState ve useEffect hook'larının kullanım amaçlarını araştırdım. Ayrıca React Router ile sayfalar arası yönlendirme mantığını, form yönetimini, API'den veri çekme yöntemlerini, localStorage kullanımını, kullanıcıya hata mesajı gösterme tekniklerini, loading durumu yönetimini ve responsive tasarım prensiplerini öğrendim. React kullanarak bir eğitim kayıt formunun nasıl oluşturulacağını ve backend'e JSON formatında veri gönderme mantığını inceledim.
+
+### En çok zorlandığım konu neydi?
+
+Props ile State arasındaki farkı ve useEffect hook'unun çalışma mantığını anlamakta başlangıçta zorlandım. Ayrıca React'te component yapısının nasıl organize edildiğini ve frontend ile backend arasındaki veri akışını kavramak zaman aldı.
+
+### GitHub'da ne oluşturdum?
+
+- `week-3-react.md` dosyasını hazırladım.
+- React temelleri ve frontend mantığı ile ilgili araştırmalarımı dokümante ettim.
+- Eğitim kayıt formunda kullanılacak alanları belirledim.
+- Backend'e gönderilecek örnek JSON yapısını oluşturdum.
+- React'in AIHEXA projelerinde kullanım alanlarını araştırarak dokümana ekledim.
+
+### Bir sonraki gün neye çalışacağım?
+
+SEO'nun temel prensiplerini, arama motorlarının çalışma mantığını ve web sitelerinde SEO uygulamalarını araştıracağım. Meta etiketleri, anahtar kelime kullanımı, sayfa performansı, mobil uyumluluk ve teknik SEO konularını inceleyerek bunların AIHEXA projelerinde nasıl uygulanabileceğini öğreneceğim.
