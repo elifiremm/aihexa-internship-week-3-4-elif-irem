@@ -344,14 +344,14 @@ Formda aşağıdaki bilgiler bulunacaktır:
 
 ```json
 {
-  "firstName": "Elif",
-  "lastName": "Yılmaz",
-  "email": "elif@example.com",
-  "phone": "0555 123 45 67",
-  "educationName": "Java Full Stack Eğitimi",
-  "level": "Başlangıç",
-  "description": "Eğitim hakkında detaylı bilgi almak istiyorum.",
-  "kvkkApproved": true
+  "name": "Elif",
+  "surname": "İrem",
+  "emailAddress": "elifirem@example.com",
+  "phoneNumber": "0532 123 45 67",
+  "selectedCourse": "React Frontend Eğitimi",
+  "educationLevel": "Lisans",
+  "note": "Frontend geliştirme konusunda kendimi geliştirmek istiyorum.",
+  "acceptedKvkk": true
 }
 ```
 
